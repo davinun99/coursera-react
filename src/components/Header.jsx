@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Collapse, Jumbotron, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem} from 'reactstrap';
+import {Button, Collapse, Form, FormGroup, Input, Jumbotron, Label, Modal, ModalBody, ModalHeader, Nav, 
+Navbar, NavbarBrand, NavbarToggler, NavItem} from 'reactstrap';
 import {NavLink} from 'react-router-dom';
 
 class Header extends Component{
@@ -7,14 +8,27 @@ class Header extends Component{
         super(props);
         this.state = {
             navIsOpen: false,
+            modalIsOpen: false
         }
         this.toggleNav = this.toggleNav.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
     }
     toggleNav(){
         this.setState({
             ...this.state,
             navIsOpen: !this.state.navIsOpen
         });
+    }
+    toggleModal(){
+        this.setState({
+            ...this.state,
+            modalIsOpen: !this.state.modalIsOpen
+        })
+    }
+    handleLogin(event){
+        this.toggleModal();
+        alert("Username: " + this.username.value + " Password: " + this.password.value);
     }
     render(){
         return(
@@ -48,6 +62,15 @@ class Header extends Component{
                                     </NavLink>
                                 </NavItem>
                             </Nav>
+                            <Nav className="ml-auto">
+                                <NavItem>
+                                    <Button outline onClick={this.toggleModal}>
+                                        <span className="fa fa-sign-in fa-lg">                                            
+                                        </span> Login
+                                    </Button>
+                                </NavItem>
+                            </Nav>
+
                         </Collapse>
                     </div>
                 </Navbar>
@@ -63,6 +86,30 @@ class Header extends Component{
                         </div>
                     </div>
                 </Jumbotron>
+                <Modal isOpen={this.state.modalIsOpen} toggle={this.toggleModal}>
+                    <ModalHeader isOpen={this.state.modalIsOpen} toggle={this.toggleModal}>
+                        Login
+                    </ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.handleLogin}>
+                            <FormGroup>
+                                <Label htmlFor="username">Username</Label>
+                                <Input innerRef={input=>this.username = input} type="text" id="username" name="username" />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="password">Password</Label>
+                                <Input innerRef={input=>this.password = input} type="password" id="password" name="password" />
+                            </FormGroup>
+                            <FormGroup check>
+                                <Label check>
+                                    <Input  innerRef={input=>this.remember = input} type="checkbox" name="remember" />
+                                    Remember me
+                                </Label>
+                            </FormGroup>
+                            <Button type="submit" value="submit" color="primary">Login</Button>
+                        </Form>
+                    </ModalBody>
+                </Modal>
             </>
         );
     }
