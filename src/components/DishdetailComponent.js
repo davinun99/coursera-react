@@ -13,6 +13,11 @@ class CommentForm extends Component{
             modalIsOpen: false
         }
         this.toggleModal = this.toggleModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    handleSubmit(values){
+        console.log(values);
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
     toggleModal(){
         this.setState({
@@ -32,7 +37,7 @@ class CommentForm extends Component{
                         Submit Comment
                     </ModalHeader>
                     <ModalBody>
-                        <LocalForm>
+                        <LocalForm onSubmit={(values)=>this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Col xs="12">
                                     <Label htmlFor="rating">Rating</Label>
@@ -116,8 +121,7 @@ function DishDetail(props){
             </Card>
         );
     }
-    function renderComments(commentsArray){
-        console.log(commentsArray);
+    function renderComments(commentsArray, dishId){
         if(commentsArray){
             return(
                 <div className="row">
@@ -131,7 +135,9 @@ function DishDetail(props){
                         ))}
                     </ul>
                     <div className="col-12">
-                        <CommentForm/>
+                        <CommentForm addComment={props.addComment}
+                            dishId={dishId}
+                        />
                     </div>
                 </div> 
             );
@@ -161,7 +167,7 @@ function DishDetail(props){
                         {renderDish(props.dish)}
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        {renderComments(props.comments)}
+                        {renderComments(props.comments, props.dish.id)}
                     </div>
                 </div>
             </div>
