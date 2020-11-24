@@ -126,3 +126,66 @@ export const addComments = (comments)=>({
     type: ActionTypes.ADD_COMMENTS,
     payload: comments
 });
+
+
+/**Start of assignment 3 */
+export const fetchLeaders = () => (dispatch) => {
+    dispatch(dishesLoading(true));
+    return fetch(baseUrl + 'leaders')
+    .then(response =>{
+        if (response.ok){
+            return response;
+        }
+        var error = new Error('Error: ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+    }, error => {
+        throw error;
+    })
+    .then(response=> response.json())
+    .then(leaders=> dispatch(addLeaders(leaders)))
+    .catch(error =>dispatch(leadersFailed(error.message)));
+}
+
+export const leadersLoading = () => ({
+    type: ActionTypes.LEADERS_LOADING
+});
+export const addLeaders = (leaders)=>({
+    type: ActionTypes.ADD_LEADERS,
+    payload: leaders
+});
+export const leadersFailed = (errorMessage)=>({
+    type: ActionTypes.LEADERS_FAILED,
+    payload: errorMessage
+});
+
+export const postFeedback = (firstname, lastname, telnum, email, agree, contactType, message ) => (dispatch) => {
+    const feedBack = {
+        firstname, lastname, telnum, email, agree, contactType, message,
+        date: new Date()
+    }
+    return fetch(baseUrl + 'feedback', {
+        method: 'POST',
+        body: JSON.stringify(feedBack),
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    }).then(response =>{
+        if (response.ok){
+            return response;
+        }
+        var error = new Error('Error: ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+    }, error => {
+        throw error;
+    })
+    .then(response=> response.json())
+    .then(comment=>{
+        alert(JSON.stringify(comment));
+    })
+    .catch(error => {
+        console.error(error);
+    });
+} 

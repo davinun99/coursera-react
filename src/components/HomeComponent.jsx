@@ -29,6 +29,9 @@ function RenderCard({item, isLoading, errorMessage}){
 }
 
 const Home = (props) => {
+    if (!props.leader || !props.dish || !props.promotion){
+        return null;
+    }
     return (
         <div className="container">
             <div className="row align-items-start">
@@ -39,7 +42,7 @@ const Home = (props) => {
                     <RenderCard item={props.promotion} isLoading={props.promosLoading} errorMessage={props.promosErrorMessage} />
                 </div>
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={props.leader} />
+                    <RenderCard item={props.leader}  isLoading={props.leaderLoading} errorMessage={props.leaderError}/>
                 </div>
             </div>
         </div>

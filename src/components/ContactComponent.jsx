@@ -15,6 +15,8 @@ class Contact extends Component{
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(values){
+        this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.email, 
+            values.agree, values.contactType, values.message);
         this.props.resetFeedBackForm();
     }
     render(){
@@ -123,7 +125,7 @@ class Contact extends Component{
                                     <Label htmlFor="email" md={2}>Email</Label>
                                     <Col md={10}>
                                         <Control.text model=".firstName" 
-                                            className="form-control" id="email" name="email" 
+                                            className="form-control" model=".email" id="email" name="email" 
                                             placeholder="Email"
                                         />
                                     </Col>
