@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Control, Errors, LocalForm } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import {FadeTransform, Fade, Stagger} from 'react-animation-components';
 
 const minlength = (len)=>(val)=> (val) && val.length >= len;
 const maxLength = (len)=>(val)=> !(val) || val.length <= len;
@@ -113,13 +114,15 @@ class CommentForm extends Component{
 function DishDetail(props){
     function renderDish(dish){
         return(
-            <Card>
-                <CardImg top src={baseUrl + dish.image} alt={dish.name}/>
-                <CardBody>
-                    <CardTitle>{dish.name}</CardTitle>
-                    <CardText>{dish.description}</CardText>
-                </CardBody>
-            </Card>
+            <FadeTransform in transformProps={{exitTransform: 'scale(0.5) translateY(-50%)'}}>
+                <Card>
+                    <CardImg top src={baseUrl + dish.image} alt={dish.name}/>
+                    <CardBody>
+                        <CardTitle>{dish.name}</CardTitle>
+                        <CardText>{dish.description}</CardText>
+                    </CardBody>
+                </Card>
+            </FadeTransform>
         );
     }
     function renderComments(commentsArray, dishId){
@@ -128,12 +131,16 @@ function DishDetail(props){
                 <div className="row">
                     <h4 className="ml-4">Comments</h4>
                     <ul>
-                        {commentsArray.map(comment=>(
-                            <li className="list-unstyled" key={comment.id}>
-                                <p>{comment.comment}</p>
-                                <p>-- {comment.author}, {new Date(comment.date).toDateString()}</p>
-                            </li>
-                        ))}
+                        <Stagger in>
+                            {commentsArray.map(comment=>(
+                                <Fade in>
+                                    <li className="list-unstyled" key={comment.id}>
+                                        <p>{comment.comment}</p>
+                                        <p>-- {comment.author}, {new Date(comment.date).toDateString()}</p>
+                                    </li>
+                                </Fade>
+                            ))}
+                        </Stagger>
                     </ul>
                     <div className="col-12">
                         <CommentForm postComment={props.postComment}
