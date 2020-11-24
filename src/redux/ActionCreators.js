@@ -48,7 +48,6 @@ export const fetchDishes = () => (dispatch) => {
         error.response = response;
         throw error;
     }, error => {
-        var error = new Error(error.message);
         throw error;
     })
     .then(response=> response.json())
@@ -89,7 +88,6 @@ export const fetchComments = () => (dispatch) => {
         error.response = response;
         throw error;
     }, error => {
-        var error = new Error(error.message);
         throw error;
     })
     .then(response=> response.json())
@@ -108,7 +106,6 @@ export const fetchPromos = () => (dispatch) => {
         error.response = response;
         throw error;
     }, error => {
-        var error = new Error(error.message);
         throw error;
     })
     .then(response=> response.json())
